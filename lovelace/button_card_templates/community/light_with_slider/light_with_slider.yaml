@@ -1,0 +1,74 @@
+list_items_light:
+  styles:
+    card:
+      - box-shadow: none
+      - padding: 0px
+    grid:
+      - grid-template-areas: '"item1 item2"'
+      - grid-template-columns: 2fr 1fr
+      - grid-template-rows: min-content
+      - column-gap: 7px
+      
+light_buttons:
+  variables:
+    entity: "cover.fibaro_cover_balcon"
+    name: "Lumière"
+  styles:
+    card:
+      - border-radius: 20px
+      - box-shadow: var(--box-shadow)
+      - padding: 12px
+    grid:
+      - grid-template-areas: '"item1" "item2"'
+      - grid-template-columns: 1fr
+      - grid-template-rows: min-content  min-content
+      - row-gap: 12px
+  custom_fields:
+    item1:
+      card:
+        entity: "[[[ return variables.entity ]]]"
+        name: "[[[ return variables.name ]]]"
+        tap_action:
+          action: call-service
+          service: light.toggle
+          service_data:
+            entity_id: "[[[ return variables.entity ]]]"
+        template:
+          - icon_info
+          - light
+        type: "custom:button-card"
+    item2:
+      card:
+        template: list_items_light
+        type: "custom:button-card"
+        custom_fields:
+          item1:
+            card:
+              type: custom:slider-card
+              entity: "[[[ return variables.entity ]]]"
+              radius: 14px
+              height: 42px
+              mainSliderColorOff: var(--google-grey-500)
+              secondarySliderColor: "rgba(var(--couleur-theme),0.05)"
+              secondarySliderColorOff: "rgba(var(--couleur-theme),0.05)"
+              thumbColorOff: white
+          item2:
+            card:
+              icon: "mdi:palette"
+              tap_action:
+                action: call-service
+                service: browser_mod.popup
+                service_data:
+                  title: Fermer
+                  card:
+                    type: custom:light-entity-card
+                    entity: "[[[ return variables.entity ]]]"
+                    persist_features: true
+                    brightness: false
+                    color_temp: false
+                    white_value: false
+                    hide_header: true
+                    effects_list: false
+              type: "custom:button-card"
+              entity: "[[[ return variables.entity ]]]"
+              template: widget_icon
